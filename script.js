@@ -8,13 +8,13 @@ var submitBtn = document.querySelector("#submit")
 //create an empty object to store preferences
 var preferences = {}
 
-// Lines 12-33 Code learned from Youtube's Traversy Media from video "Javascript Password Generator"
-const randomFunc = {
-  lower: getRandomLower,
-  upper: getRandomUpper,
-  number: getRandomNumber,
-  symbol: getRandomSymbol
-}
+// Lines 12-33 Code learned from Youtube's Traversy Media from video "Javascript Password Generator", modified a bit to fit what I needed
+const variables = [
+  lower = getRandomLower(),
+  upper = getRandomUpper(),
+  number = getRandomNumber(),
+  symbol = getRandomSymbol()
+]
 
 function getRandomLower() {
   return String.fromCharCode (Math.floor(Math.random() * 26 + 97));
@@ -33,10 +33,12 @@ function getRandomSymbol() {
   return symbols[Math.floor(Math.random() * symbols.length)];
 }
 
-function getPreferences(event) {
-  event.preventDefault()
   //hide preferences form
   formEl.style.display = "none";
+
+function getPreferences(event) {
+  event.preventDefault()
+  //making the form return values for the submit button
   var leng = document.querySelector("#length").value
   var lowercase = document.querySelector("#lowercase").checked
   var uppercase = document.querySelector("#uppercase").checked
@@ -50,11 +52,29 @@ function getPreferences(event) {
   preferences.special = special
 }
 
+  //creating the password
+  var pwd = variables[Math.floor(Math.random() * 4)];
+  pwd.length = preferences.leng;
+
+  console.log(pwd)
+
 function generatePassword() {
-  //need to display HTML element after pressing the submit button rather than return immediately
   formEl.style.display = "block";
-  var pwd = "dfjeioe"
-  return pwd
+  //need to display HTML element after pressing the submit button rather than return immediately
+  //add preferences values so that they display as desired
+  if (preferences.leng === undefined,
+      preferences.lowercase === undefined,
+      preferences.uppercase === undefined,
+      preferences.numbers === undefined,
+      preferences.special === undefined) {
+        return "Please enter your criteria"
+      } else if (preferences.leng >=8 && preferences.length <=128,
+                preferences.lowercase === true,
+                preferences.uppercase === true,
+                preferences.numbers === true,
+                preferences.special === true) {
+                  return pwd 
+                }
 }
 
 // Write password to the #password input
@@ -66,7 +86,8 @@ function writePassword() {
 
 }
 
-// Add event listener to generate button
+
+// Add event listener to generate button and submit button
 generateBtn.addEventListener("click", writePassword);
 
-submitBtn.addEventListener("click", getPreferences)
+submitBtn.addEventListener("click", getPreferences, writePassword)

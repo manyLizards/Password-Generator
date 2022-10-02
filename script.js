@@ -50,6 +50,7 @@ function getPreferences(event) {
   preferences.uppercase = uppercase
   preferences.numbers = numbers
   preferences.special = special
+  writePassword();
 }
 
   //creating the password
@@ -59,7 +60,7 @@ function getPreferences(event) {
   console.log(pwd)
 
 function generatePassword() {
-  formEl.style.display = "block";
+  
   //need to display HTML element after pressing the submit button rather than return immediately
   //add preferences values so that they display as desired
   if (preferences.leng === undefined,
@@ -75,6 +76,11 @@ function generatePassword() {
                 preferences.special === true) {
                   return pwd 
                 }
+  return "Hello";
+}
+
+function showForm(){
+  formEl.style.display = "block";
 }
 
 // Write password to the #password input
@@ -82,12 +88,12 @@ function writePassword() {
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
-  //passwordText.value = password;
+  passwordText.value = password;
 
 }
 
 
 // Add event listener to generate button and submit button
-generateBtn.addEventListener("click", writePassword);
+generateBtn.addEventListener("click", showForm);
 
 submitBtn.addEventListener("click", getPreferences,)

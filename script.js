@@ -61,7 +61,6 @@ function getPreferences(event) {
 
 function generatePassword() {
   
-  //need to display HTML element after pressing the submit button rather than return immediately
   //add preferences values so that they display as desired
   if (preferences.leng === undefined,
       preferences.lowercase === undefined,
@@ -69,14 +68,73 @@ function generatePassword() {
       preferences.numbers === undefined,
       preferences.special === undefined) {
         return "Please enter your criteria"
-      } else if (preferences.leng >=8 && preferences.length <=128,
+      } else if (preferences.leng >= 8 && preferences.length <= 128,
                 preferences.lowercase === true,
                 preferences.uppercase === true,
                 preferences.numbers === true,
                 preferences.special === true) {
                   return pwd 
-                }
-  return "Hello";
+                } else if (preferences.leng >= 8 && preferences.length <= 128,
+                  preferences.lowercase === true,
+                  preferences.uppercase === true,
+                  preferences.numbers === true,
+                  preferences.special === false) {
+                    return pwd //without special characters
+} else if (preferences.leng >= 8 && preferences.length <= 128,
+  preferences.lowercase === true,
+  preferences.uppercase === true,
+  preferences.numbers === false,
+  preferences.special === false) {
+    return pwd //without special characters or numbers
+  } else if (preferences.leng >= 8 && preferences.length <= 128,
+    preferences.lowercase === true,
+    preferences.uppercase === false,
+    preferences.numbers === false,
+    preferences.special === false) {
+      return pwd //without special characters, numbers, or uppercase letters
+    } else if (preferences.leng >= 8 && preferences.length <= 128,
+      preferences.lowercase === false,
+      preferences.uppercase === false,
+      preferences.numbers === false,
+      preferences.special === false) {
+        return "Please enter your criteria"
+       } else if (preferences.leng >= 8 && preferences.length <= 128,
+          preferences.lowercase === false,
+          preferences.uppercase === true,
+          preferences.numbers === true,
+          preferences.special === true) {
+            return pwd //without lowercase
+          } else if (preferences.leng >= 8 && preferences.length <= 128,
+            preferences.lowercase === false,
+            preferences.uppercase === false,
+            preferences.numbers === true,
+            preferences.special === true) {
+              return pwd //without lowercase or uppercase
+            } else if (preferences.leng >= 8 && preferences.length <= 128,
+              preferences.lowercase === false,
+              preferences.uppercase === false,
+              preferences.numbers === false,
+              preferences.special === true) {
+                return pwd //without lowercase, uppercase, or numbers
+              } else if (preferences.leng >= 8 && preferences.length <= 128,
+                preferences.lowercase === true,
+                preferences.uppercase === false,
+                preferences.numbers === false,
+                preferences.special === true) {
+                  return pwd //without uppercase or numbers
+                } else if (preferences.leng >= 8 && preferences.length <= 128,
+                  preferences.lowercase === true,
+                  preferences.uppercase === true,
+                  preferences.numbers === false,
+                  preferences.special === true) {
+                    return pwd //without numbers
+                  } else if (preferences.leng >= 8 && preferences.length <= 128,
+                    preferences.lowercase === true,
+                    preferences.uppercase === false,
+                    preferences.numbers === true,
+                    preferences.special === true) {
+                      return pwd //without uppercase
+}
 }
 
 function showForm(){
@@ -96,4 +154,4 @@ function writePassword() {
 // Add event listener to generate button and submit button
 generateBtn.addEventListener("click", showForm);
 
-submitBtn.addEventListener("click", getPreferences,)
+submitBtn.addEventListener("click", generatePassword)

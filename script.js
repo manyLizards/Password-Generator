@@ -1,20 +1,29 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-var formEl = document.querySelector("#preferences")
+var formEl = document.querySelector("#preferences");
 
-var submitBtn = document.querySelector("#submit")
+var submitBtn = document.querySelector("#submit");
 
-//create an empty object to store preferences
-var preferences = {}
+var passwordText = document.querySelector("#password");
+
+var lengthEl = document.querySelector("#length");
+
+var lowercaseEl = document.querySelector("#lowercase");
+
+var uppercaseEl = document.querySelector("#uppercase");
+
+var numbersEl = document.querySelector("#numbers");
+
+var specialEl = document.querySelector("#special");
 
 // Lines 12-33 Code learned from Youtube's Traversy Media from video "Javascript Password Generator", modified a bit to fit what I needed
-const variables = [
-  lower = getRandomLower(),
-  upper = getRandomUpper(),
-  number = getRandomNumber(),
-  symbol = getRandomSymbol()
-]
+const variables = {
+  lower: getRandomLower,
+  upper: getRandomUpper,
+  number: getRandomNumber,
+  symbol: getRandomSymbol
+}
 
 function getRandomLower() {
   return String.fromCharCode (Math.floor(Math.random() * 26 + 97));
@@ -33,125 +42,66 @@ function getRandomSymbol() {
   return symbols[Math.floor(Math.random() * symbols.length)];
 }
 
-  //hide preferences form
-  formEl.style.display = "none";
 
 function getPreferences(event) {
   event.preventDefault()
-  //making the form return values for the submit button
-  var leng = document.querySelector("#length").value
-  var lowercase = document.querySelector("#lowercase").checked
-  var uppercase = document.querySelector("#uppercase").checked
-  var numbers = document.querySelector("#numbers").checked
-  var special = document.querySelector("#special").checked
-  //assign preference variables as keys to preferences object
-  preferences.leng = leng
-  preferences.lowercase = lowercase
-  preferences.uppercase = uppercase
-  preferences.numbers = numbers
-  preferences.special = special
+  //assign preference variables as keys to variables object
   writePassword();
 }
 
-  //creating the password
-  var pwd = variables[Math.floor(Math.random() * 4)];
-  pwd.length = preferences.leng;
+function generatePassword(lower, upper, number, symbol, length) {
+  //init pw var, 
+  //filter unchecked types, 
+  //loop over length call generator function for each type, 
+  //add final pw to pw var and return
+  var generatedPassword = '';
 
-  console.log(pwd)
+  var typesCount = lower + upper + number + symbol;
 
-function generatePassword() {
+  const typesArr = [{lower}, {upper}, {number}, {symbol}].filter(
+    item => Object.values(item)[0]
+  );
+
+  if(typesCount === 0) {
+    return "Please enter your criteria"
+  }
+
+  if(length < 8) {
+    return "The password must be more than 8 characters."
+  }
+
+  for (let i = 0; i < length; i += typesCount) {
+    typesArr.forEach(type => {
+      const funcName = Object.keys(type)[0];
+      console.log('funcName: ', funcName)
+
+      generatedPassword += variables[funcName]();
+    });
+  }
+  var finalPassword = generatedPassword.slice(0, 128);
+  return finalPassword;
   
-  //add preferences values so that they display as desired
-  if (preferences.leng === undefined,
-      preferences.lowercase === undefined,
-      preferences.uppercase === undefined,
-      preferences.numbers === undefined,
-      preferences.special === undefined) {
-        return "Please enter your criteria"
-      } else if (preferences.leng >= 8 && preferences.length <= 128,
-                preferences.lowercase === true,
-                preferences.uppercase === true,
-                preferences.numbers === true,
-                preferences.special === true) {
-                  return pwd 
-                } else if (preferences.leng >= 8 && preferences.length <= 128,
-                  preferences.lowercase === true,
-                  preferences.uppercase === true,
-                  preferences.numbers === true,
-                  preferences.special === false) {
-                    return pwd //without special characters
-} else if (preferences.leng >= 8 && preferences.length <= 128,
-  preferences.lowercase === true,
-  preferences.uppercase === true,
-  preferences.numbers === false,
-  preferences.special === false) {
-    return pwd //without special characters or numbers
-  } else if (preferences.leng >= 8 && preferences.length <= 128,
-    preferences.lowercase === true,
-    preferences.uppercase === false,
-    preferences.numbers === false,
-    preferences.special === false) {
-      return pwd //without special characters, numbers, or uppercase letters
-    } else if (preferences.leng >= 8 && preferences.length <= 128,
-      preferences.lowercase === false,
-      preferences.uppercase === false,
-      preferences.numbers === false,
-      preferences.special === false) {
-        return "Please enter your criteria"
-       } else if (preferences.leng >= 8 && preferences.length <= 128,
-          preferences.lowercase === false,
-          preferences.uppercase === true,
-          preferences.numbers === true,
-          preferences.special === true) {
-            return pwd //without lowercase
-          } else if (preferences.leng >= 8 && preferences.length <= 128,
-            preferences.lowercase === false,
-            preferences.uppercase === false,
-            preferences.numbers === true,
-            preferences.special === true) {
-              return pwd //without lowercase or uppercase
-            } else if (preferences.leng >= 8 && preferences.length <= 128,
-              preferences.lowercase === false,
-              preferences.uppercase === false,
-              preferences.numbers === false,
-              preferences.special === true) {
-                return pwd //without lowercase, uppercase, or numbers
-              } else if (preferences.leng >= 8 && preferences.length <= 128,
-                preferences.lowercase === true,
-                preferences.uppercase === false,
-                preferences.numbers === false,
-                preferences.special === true) {
-                  return pwd //without uppercase or numbers
-                } else if (preferences.leng >= 8 && preferences.length <= 128,
-                  preferences.lowercase === true,
-                  preferences.uppercase === true,
-                  preferences.numbers === false,
-                  preferences.special === true) {
-                    return pwd //without numbers
-                  } else if (preferences.leng >= 8 && preferences.length <= 128,
-                    preferences.lowercase === true,
-                    preferences.uppercase === false,
-                    preferences.numbers === true,
-                    preferences.special === true) {
-                      return pwd //without uppercase
-}
 }
 
 function showForm(){
   formEl.style.display = "block";
 }
 
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
-
-  passwordText.value = password;
-
-}
-
-
 // Add event listener to generate button and submit button
 generateBtn.addEventListener("click", showForm);
 
-submitBtn.addEventListener("click", generatePassword)
+submitBtn.addEventListener("click", () => {
+  event.preventDefault();
+  var length = +lengthEl.value;
+  var hasLower = lowercaseEl.checked;
+  var hasUpper = uppercaseEl.checked;
+  var hasNumber = numbersEl.checked;
+  var hasSpecial = specialEl.checked;
+
+  passwordText.innerText = generatePassword(
+    hasLower, 
+    hasUpper, 
+    hasNumber, 
+    hasSpecial, 
+    length);
+});
